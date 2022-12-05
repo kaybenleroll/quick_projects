@@ -1,0 +1,15 @@
+.Rproj.user/*
+.git/
+
+data/*
+
+*_cache/*
+*_files/*
+
+*.R
+*.Rmd
+*.html
+*.Rproj
+
+
+
