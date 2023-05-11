@@ -1,0 +1,28 @@
+---
+title: "Temp Report"
+author: "Mick Cooney <mcooney@describedata.com>"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    fig_caption: yes
+    number_sections: yes
+    theme: cerulean
+    toc: yes
+    toc_depth: 3
+    toc_float:
+      smooth_scroll: FALSE
+
+  pdf_document: default
+---
+
+
+```{r knit_opts, include = FALSE}
+library(tidyverse)
+
+options(
+  width = 80L,
+  warn  = 1
+  )
+
+set.seed(42)
+```
