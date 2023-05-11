@@ -1,0 +1,111 @@
+---
+title: "Using the Space-Track API"
+author: "Mick Cooney <mickcooney@gmail.com>"
+date: "Last updated: `r format(Sys.time(), '%B %d, %Y')`"
+editor: source
+execute:
+  message: false
+  warning: false
+  error: false
+format:
+  html:
+    light: superhero
+    dark: darkly
+    anchor-sections: true
+    embed-resources: true
+    number-sections: true
+    smooth-scroll: true
+    toc: true
+    toc-depth: 3
+    toc-location: left
+    code-fold: true
+    code-summary: "Show code"
+---
+
+```{r import_libraries}
+#| echo: FALSE
+#| message: FALSE
+
+library(conflicted)
+library(tidyverse)
+library(scales)
+library(cowplot)
+library(magrittr)
+library(rlang)
+library(fs)
+library(purrr)
+library(furrr)
+library(glue)
+library(httr)
+library(curl)
+
+
+source("lib_utils.R")
+
+
+conflict_lst <- resolve_conflicts(
+  c("magrittr", "rlang", "dplyr", "readr", "purrr", "ggplot2", "MASS",
+    "fitdistrplus")
+  )
+
+
+options(
+  width = 80L,
+  warn  = 1,
+  mc.cores = parallel::detectCores()
+  )
+
+
+set.seed(42)
+
+theme_set(theme_cowplot())
+plan(multisession)
+```
+
+
+# Setup Space-Track API
+
+```{r configure_query_data}
+#| echo: TRUE
+
+
+
+st_username <- "mcooney@describedata.com"
+st_password <- "GBzicIc1RbTybI1u"
+
+base_url <- "https://www.space-track.org/ajaxauth/login"
+
+request_url <- "https://www.space-track.org/basicspacedata/query/class/gp_history/NORAD_CAT_ID/28472/orderby/EPOCH asc/format/csv/emptyresult/show"
+```
+
+
+```{r create_curl_request}
+#| echo: TRUE
+
+h <- new_handle()
+
+handle_setform(h,
+  identity = st_username,
+  password = st_password,
+  query    = request_url
+  )
+
+req <- curl_fetch_memory(base_url, handle = h)
+
+req$content |> rawToChar() |> write_lines("tmp.csv")
+
+```
+
+
+
+
+# R Environment
+
+```{r show_session_info}
+#| echo: TRUE
+#| message: TRUE
+
+options(width = 120L)
+sessioninfo::session_info()
+options(width = 80L)
+```
