@@ -28,7 +28,7 @@ HTML_FILES := $(patsubst %.qmd,%.html,$(RMD_FILES))
 
 all-html: $(HTML_FILES)
 
-.Rmd.html:
+.qmd.html:
 	echo "TIMESTAMP:" `date` "- Rendering script $<" >> output.log 2>&1
 	Rscript -e 'quarto::quarto_render("$<")'         >> output.log 2>&1
 	echo "TIMESTAMP:" `date` "- Finished $<"         >> output.log 2>&1
